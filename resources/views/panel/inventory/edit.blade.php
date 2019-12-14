@@ -5,11 +5,11 @@
 @endsection
 
 @section('content')
-    
+
     <div class="container">
 
         @well(['class'=>'success'])
-            <p>Dashboard > Inventory > Edit Record</p>
+            <p>Dashboard > Inventory > Edit Inventory</p>
         @endwell
 
         @form
@@ -19,52 +19,64 @@
 
             <div class="form-group">
                 <label for="itemNumber">Item Number</label>
-                <input type="text" class="form-control" name="itemNumber" value="{{ $inventory->itemNumber }}" id="itemNumber">
-            </div>  
+                <input type="text" class="form-control" name="itemNumber"
+                       value="{{ $inventory->itemNumber }}" id="itemNumber">
+            </div>
 
             <div class="form-group">
                 <label for="companyName">Company Name</label>
-                <input type="text" class="form-control" name="companyName" value="{{ $inventory->companyName }}" id="companyName">
+                <input type="text" class="form-control" name="companyName"
+                       value="{{ $inventory->companyName }}" id="companyName">
             </div>
-            
+
             <div class="form-group">
                 <label for="itemName">Item Name</label>
-                <input type="text" class="form-control" name="itemName" value="{{ $inventory->itemName }}" id="itemName">
+                <input type="text" class="form-control" name="itemName"
+                       value="{{ $inventory->itemName }}" id="itemName">
             </div>
-            
+
             <div class="form-group">
                 <label for="quantity">Quantity</label>
-                <input type="text" class="form-control" name="quantity" value="{{ $inventory->quantity }}" id="quantity">
+                <input type="text" class="form-control" name="quantity"
+                       value="{{ $inventory->quantity }}" id="quantity">
             </div>
-           
+
             <div class="form-group">
                 <label for="unitPrice">Unit Price</label>
-                <input type="text" class="form-control" name="unitPrice" value="{{ $inventory->unitPrice }}" id="unitPrice">
+                <input type="text" class="form-control" name="unitPrice"
+                       value="{{ $inventory->unitPrice }}" id="unitPrice">
             </div>
-           
+
             <div class="form-group">
                 <label for="salePrice">Sale Price</label>
-                <input type="text" class="form-control" name="salePrice" value="{{ $inventory->salePrice }}" id="salePrice">
+                <input type="text" class="form-control" name="salePrice"
+                       value="{{ $inventory->salePrice }}" id="salePrice">
             </div>
-            
+
             <div class="form-group">
                 <label for="localForeign">Local / Foreign Purchase</label>
-                <input type="text" class="form-control" name="localForeign" value="{{ $inventory->localForeign }}" id="localForeign">
+                <input type="text" class="form-control" name="localForeign"
+                       value="{{ $inventory->localForeign }}" id="localForeign">
+            </div>
+
+            <div class="form-group">
+                <label for="expiry">Expiry Date</label>
+                <input type="date" class="form-control" name="expiry"
+                       value="{{ $inventory->expiry }}" id="expiry">
             </div>
 
             <input type="submit" class="btn btn-success" value="Submit">
-            <input type="button" class="btn btn-danger" value="Clear">
 
         </form>
         @endform
 
     </div>
 
-    
+
     <div class="mt-5"></div>
 
     @include('shared.notification.error')
-    
+
 @endsection
 
 @push('scripting')

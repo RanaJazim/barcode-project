@@ -25,3 +25,14 @@ Route::get('/notification', function(INotification $iNotification) {
 
     return view('panel.inventory.create');
 });
+
+
+// Routes for Inventory
+Route::resource('inventory', 'InventoryController');
+
+// Routes for Customer
+Route::resource('customer', 'CustomerController');
+
+// Routes for Invoice
+Route::get('/invoice/open', 'InvoiceController@open')->name('invoice.open');
+Route::post('/invoice/create', 'InvoiceController@create')->name('invoice.create');

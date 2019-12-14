@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    
+
     <div class="container">
 
         @well(['class'=>'info'])
@@ -13,10 +13,12 @@
         @endwell
 
         @navigate
-            <a href="{{ route('inventory.create') }}" class="btn btn-primary">Add New Record</a>
+            <a href="{{ route('inventory.create') }}" class="btn btn-primary">
+                Add New Record
+            </a>
         @endnavigate
 
-        @table(['title'=>'Inventries Record'])
+        @table(['title'=>'Inventories Record'])
         <thead>
             <tr>
                 <th>Item Number</th>
@@ -26,6 +28,7 @@
                 <th>Unit Price</th>
                 <th>Sale Price</th>
                 <th>Local</th>
+                <th>Expiry Date</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -39,10 +42,25 @@
                         <td>{{ $inventory->unitPrice }}</td>
                         <td>{{ $inventory->salePrice }}</td>
                         <td>{{ $inventory->localForeign }}</td>
+                        <td>{{ $inventory->expiry }}</td>
 
-                        <td><a href="{{ route('inventory.edit', ['inventory'=>$inventory->id]) }}" class="btn btn-warning btn-sm"><i class="fa fa-pencil"><span style="margin-left: 5px;">Edit</span></i></a></td>
+                        <td>
+                            <a href="{{ route('inventory.edit', ['inventory'=>$inventory->id]) }}"
+                               class="btn btn-warning btn-sm">
+                                <i class="fa fa-pencil">
+                                    <span style="margin-left: 5px;">Edit</span>
+                                </i>
+                            </a>
+                        </td>
 
-                        <td><a href="#" data-toggle="modal" data-target="#mediumModal{{$inventory->id}}" class="btn btn-danger btn-sm"><i class="fa fa-trash"><span style="margin-left: 5px;">Delete</span></i></a></td>
+                        <td>
+                            <a href="#" data-toggle="modal" data-target="#mediumModal{{$inventory->id}}"
+                               class="btn btn-danger btn-sm">
+                                <i class="fa fa-trash">
+                                    <span style="margin-left: 5px;">Delete</span>
+                                </i>
+                            </a>
+                        </td>
 
                         @model(['obj' => $inventory])
                             @slot('modelTitle')
@@ -52,7 +70,8 @@
                                 <p>Are you sure you want to delete this item ??</p>
                             @endslot
 
-                            <form action="{{ route('inventory.destroy', ['inventory'=>$inventory->id]) }}" method="POST">
+                            <form action="{{ route('inventory.destroy', ['inventory'=>$inventory->id]) }}"
+                                  method="POST">
                                 @csrf
                                 @method('DELETE')
 
