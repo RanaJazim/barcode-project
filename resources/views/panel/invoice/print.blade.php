@@ -71,7 +71,11 @@
                 </p>
             </div>
             <div class="col-md-4">
-                <p>Barcode Section here</p>
+                @inject('qrcode', 'App\Custom\Barcode\Qrcode')
+                {{ $qrcode->setCompanyName($invoice->inventory->companyName) }}
+                {{ $qrcode->setItemNumber($invoice->inventory->itemNumber) }}
+                {{ $qrcode->setAddress($invoice->customer->customerAddress) }}
+                {!! $qrcode->generate_qrCode(90) !!}
             </div>
         </div>
 

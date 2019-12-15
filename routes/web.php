@@ -47,5 +47,5 @@ Route::get('/invoice/{id}', 'InvoiceController@show')->name('invoice.show');
 
 
 Route::get('/print', function () {
-    return view('panel.invoice.print');
+    return \SimpleSoftwareIO\QrCode\Facades\QrCode::size(500)->generate('text');
 });
