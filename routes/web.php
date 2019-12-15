@@ -35,4 +35,17 @@ Route::resource('customer', 'CustomerController');
 
 // Routes for Invoice
 Route::get('/invoice/open', 'InvoiceController@open')->name('invoice.open');
-Route::post('/invoice/create', 'InvoiceController@create')->name('invoice.create');
+Route::get('/invoice/create', 'InvoiceController@create')->name('invoice.create');
+Route::post('/invoice', 'InvoiceController@store')->name('invoice.store');
+Route::get('/customer/{customerId}/inventroy/{inventoryId}/invoice',
+    'InvoiceController@index')->name('invoice.index');
+Route::get('/invoice/{id}/edit',
+    'InvoiceController@edit')->name('invoice.edit');
+Route::patch('/invoice/{id}', 'InvoiceController@update')->name('invoice.update');
+Route::delete('/invoice/{id}', 'InvoiceController@destroy')->name('invoice.destroy');
+Route::get('/invoice/{id}', 'InvoiceController@show')->name('invoice.show');
+
+
+Route::get('/print', function () {
+    return view('panel.invoice.print');
+});

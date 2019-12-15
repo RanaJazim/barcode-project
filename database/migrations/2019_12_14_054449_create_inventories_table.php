@@ -23,7 +23,6 @@ class CreateInventoriesTable extends Migration
             $table->string('salePrice');
             $table->string('localForeign');
             $table->string('expiry');
-
             $table->timestamps();
         });
     }

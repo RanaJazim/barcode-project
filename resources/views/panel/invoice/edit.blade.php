@@ -1,7 +1,7 @@
 @extends('panel.dashboard.main')
 
 @section('title')
-    Create Invoice
+    Edit Invoice
 @endsection
 
 @section('content')
@@ -9,70 +9,70 @@
     <div class="container">
 
         @well(['class'=>'success'])
-        <p>Dashboard > Invoice > Create Invoice</p>
+        <p>Dashboard > Invoice > Edit Invoice</p>
         @endwell
-
-        @navigate
-        <a href="{{ route('invoice.index', ['customerId'=>$customer->id,
-                'inventoryId'=>$inventory->id]) }}" class="btn btn-primary">
-            Display All Invoices
-        </a>
-        @endnavigate
 
 
         @form
-        <form action="{{ route('invoice.store') }}" method="POST">
+        <form action="{{ route('invoice.update', ['id'=>$invoice->id]) }}" method="POST">
             @csrf
+            @method('PATCH')
 
-            <input type="hidden" name="customer_id" value="{{$customer->id}}">
-            <input type="hidden" name="inventory_id" value="{{$inventory->id}}">
+            <input type="hidden" name="customer_id" value="{{$invoice->customer->id}}">
+            <input type="hidden" name="inventory_id" value="{{$invoice->inventory->id}}">
 
             <div class="form-group">
                 <label for="customerName">Customer Name</label>
                 <input readonly type="text" class="form-control" name="customerName"
-                       value="{{ $customer->customerName }}" id="customerName">
+                       value="{{ $invoice->customer->customerName }}" id="customerName">
             </div>
 
             <div class="form-group">
                 <label for="itemName">Item Name</label>
                 <input readonly type="text" id="itemName" class="form-control"
-                       name="itemName" value="{{ $inventory->itemName }}">
+                       name="itemName" value="{{ $invoice->inventory->itemName }}">
+            </div>
+
+            <div class="form-group">
+                <label for="onDate">On Date</label>
+                <input readonly type="date" name="onDate" id="onDate"
+                        class="form-control" value="{{ $invoice->onDate }}">
             </div>
 
             <div class="form-group">
                 <label for="dueDate">Due Date</label>
                 <input type="date" id="dueDate" class="form-control"
-                        name="dueDate" value="{{ old('dueDate') }}">
+                       name="dueDate" value="{{ $invoice->dueDate }}">
             </div>
 
             <div class="form-group">
                 <label for="incNumber">Inc Number</label>
                 <input type="text" id="incNumber" class="form-control"
-                       name="incNumber" value="{{ old('incNumber') }}">
+                       name="incNumber" value="{{ $invoice->incNumber }}">
             </div>
 
             <div class="form-group">
                 <label for="batchNumber">Batch Number</label>
                 <input type="text" id="batchNumber" class="form-control"
-                       name="batchNumber" value="{{ old('batchNumber') }}">
+                       name="batchNumber" value="{{ $invoice->batchNumber }}">
             </div>
 
             <div class="form-group">
                 <label for="qty">Quantity</label>
                 <input type="number" id="qty" class="form-control"
-                       name="qty" value="{{ old('qty') }}">
+                       name="qty" value="{{ $invoice->qty }}">
             </div>
 
             <div class="form-group">
                 <label for="unitPrice">Unit Price</label>
                 <input type="number" id="unitPrice" class="form-control"
-                       name="unitPrice" value="{{ old('unitPrice') }}">
+                       name="unitPrice" value="{{ $invoice->unitPrice }}">
             </div>
 
             <div class="form-group">
                 <label for="discount">Discount</label>
                 <input type="number" id="discount" class="form-control"
-                       name="discount" value="{{ old('discount') }}">
+                       name="discount" value="{{ $invoice->discount }}">
             </div>
 
             <div class="form-group">
@@ -83,7 +83,6 @@
 
 
             <input type="submit" class="btn btn-success" value="Submit">
-            <input type="button" class="btn btn-danger" value="Clear">
 
         </form>
         @endform

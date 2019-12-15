@@ -28,8 +28,7 @@
     @slot('modelBody')
         <p>Please click on one Button below</p>
 
-        <form action="{{route('invoice.create')}}" method="POST">
-            @csrf
+        <form action="{{route('invoice.create')}}" method="GET">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
