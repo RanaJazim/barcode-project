@@ -92,8 +92,8 @@
             <table class="table table-bordered">
                 <tr>
                     <th scope="col">SR#</th>
-                    <th scope="col">Product Code</th>
-                    <th scope="col">Product Name</th>
+                    <th scope="col">Item Number</th>
+                    <th scope="col">Item Name</th>
                     <th scope="col">Batch#</th>
                     <th scope="col">QTY</th>
                     <th scope="col">Unit Price</th>

@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Custom\Notification\INotification;
-use App\Customer;
+use App\Custom\Repository\Customer\CustomerRepository;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(CustomerRepository $repository)
     {
-        $customers = Customer::all();
+        $customers = $repository->getAllRecord();
 
         return view('panel.customer.index', compact('customers'));
     }
@@ -20,49 +20,38 @@ class CustomerController extends Controller
         return view('panel.customer.create');
     }
 
-    public function store(Request $request, INotification $notification)
+    public function store(Request $request, INotification $notification, CustomerRepository $repository)
     {
-        $attributes = $this->validation($request);
-        Customer::create($attributes);
-
+        $repository->store($request);
         $notification->messageNotification('Successfully created
             the customer','success');
+
         return redirect()->back();
     }
 
-    public function edit($id)
+    public function edit($id, CustomerRepository $repository)
     {
-        $customer = Customer::findOrFail($id);
+        $customer = $repository->edit($id);
 
         return view('panel.customer.edit', compact('customer'));
     }
 
-    public function update(Request $request, $id, INotification $notification)
+    public function update(Request $request, $id, INotification $notification, CustomerRepository $repository)
     {
-        $attributes = $this->validation($request);
-        Customer::findOrFail($id)->update($attributes);
-
+        $repository->update($request, $id);
         $notification->messageNotification('Successfully update
             the customer', 'success');
+
         return redirect()->route('customer.index');
     }
 
-    public function destroy($id, INotification $notification)
+    public function destroy($id, INotification $notification, CustomerRepository $repository)
     {
-        Customer::findOrFail($id)->delete();
+        $repository->destory($id);
         $notification->messageNotification('Successfully deleted
             the customer', 'success');
 
         return redirect()->back();
-    }
-
-    private function validation($values)
-    {
-        return $values->validate([
-            'customerName' => 'required',
-            'customerAddress' => 'required',
-            'mobileNumber' => 'required',
-        ]);
     }
 
 }

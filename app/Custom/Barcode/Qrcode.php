@@ -34,9 +34,9 @@ class Qrcode
     {
         return \SimpleSoftwareIO\QrCode\Facades\QrCode::size($size)
             ->generate(
-                'Company Name: ' . $this->companyName .
-                'Item Number: ' . $this->itemNumber .
-                'Address: ' . $this->address
+                "Company Name: " . $this->companyName .
+                "\r\nItem Number: " . $this->itemNumber .
+                "\r\nAddress: " . $this->address
             );
     }
 

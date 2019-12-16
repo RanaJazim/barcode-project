@@ -49,3 +49,7 @@ Route::get('/invoice/{id}', 'InvoiceController@show')->name('invoice.show');
 Route::get('/print', function () {
     return \SimpleSoftwareIO\QrCode\Facades\QrCode::size(500)->generate('text');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

@@ -16,4 +16,9 @@ class AlertNotification implements INotification
     {
         toast($message, $alert);
     }
+
+    public function my()
+    {
+        dd('working');
+    }
 }

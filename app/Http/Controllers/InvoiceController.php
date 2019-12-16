@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Custom\Notification\INotification;
+use App\Custom\Repository\Invoice\InvoiceRepository;
 use App\Customer;
 use App\Inventory;
 use App\Invoice;
@@ -10,71 +11,61 @@ use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
-    public function index($customer_id, $inventory_id)
+    public function index($customer_id, $inventory_id, InvoiceRepository $repository)
     {
-        $invoices = Invoice::where('customer_id', $customer_id)
-            ->where('inventory_id', $inventory_id)
-            ->get();
+        $invoices = $repository->getAllRecord($customer_id, $inventory_id);
 
         return view('panel.invoice.index', compact('invoices',
             'customer_id', 'inventory_id'));
     }
 
-    public function open()
+    public function open(InvoiceRepository $repository)
     {
-        $data = (object)['id' => 1];
-        $inventories = Inventory::all();
-        $customers = Customer::all();
+        $attribute = $repository->open();
 
-        return view('panel.invoice.open', compact('data',
-            'inventories', 'customers'));
+        return view('panel.invoice.open', [
+            'data' => $attribute['data'],
+            'inventories' => $attribute['inventories'],
+            'customers' => $attribute['customers'],
+        ]);
     }
 
-    public function create(Request $request)
+    public function create(Request $request, InvoiceRepository $repository)
     {
-        $customer = Customer::findOrFail($request['customer_id']);
-        $inventory = Inventory::findOrFail($request['inventory_id']);
+        $attribute = $repository->create($request);
 
-        return view('panel.invoice.create', compact('customer',
-            'inventory'));
+        return view('panel.invoice.create', [
+            'customer' => $attribute['customer'],
+            'inventory' => $attribute['inventory']
+        ]);
     }
 
-    public function store(Request $request, INotification $notification)
+    public function store(Request $request, INotification $notification, InvoiceRepository $repository)
     {
-        $attributes = $this->validation($request);
-        $attributes['finalPrice'] = $this->getFinalPrice($request);
-        $attributes['onDate'] = date('Y-m-d');
-
-        Invoice::create($attributes);
+        $repository->store($request);
         $notification->messageNotification('Successfully created the
         invoice', 'success');
 
         return redirect()->back();
     }
 
-    public function show($id)
+    public function show($id, InvoiceRepository $repository)
     {
-        $invoice = Invoice::findOrFail($id);
+        $invoice = $repository->show($id);
 
         return view('panel.invoice.print', compact('invoice'));
     }
 
-    public function edit($id)
+    public function edit($id, InvoiceRepository $repository)
     {
-        $invoice = Invoice::findOrFail($id);
+        $invoice = $repository->show($id);
 
         return view('panel.invoice.edit', compact('invoice'));
     }
 
-    public function update(Request $request, $id, INotification $notification)
+    public function update(Request $request, $id, INotification $notification, InvoiceRepository $repository)
     {
-        $attributes = $this->validation($request);
-        $attributes['finalPrice'] = $this->getFinalPrice($request);
-        $attributes['onDate'] = $request['onDate'];
-
-        $invoice = Invoice::findOrFail($id);
-
-        $invoice->update($attributes);
+        $invoice = $repository->update($request, $id);
         $notification->messageNotification('Successfully update the
             invoice', 'success');
 
@@ -84,35 +75,13 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function destroy($id, INotification $notification)
+    public function destroy($id, INotification $notification, InvoiceRepository $repository)
     {
-        Invoice::findOrFail($id)->delete();
+        $repository->destory($id);
         $notification->messageNotification('Successfully deleted the
             invoice', 'success');
 
         return redirect()->back();
-    }
-
-    private function validation($values)
-    {
-        return $values->validate([
-            'inventory_id' => 'required',
-            'customer_id' => 'required',
-            'dueDate' => 'required',
-            'incNumber' => 'required',
-            'batchNumber' => 'required',
-            'qty' => 'required',
-            'unitPrice' => 'required',
-            'discount' => 'required',
-        ]);
-    }
-
-    private function getFinalPrice($values)
-    {
-        $value = $values['unitPrice'] - $values['discount'];
-        $local_gst = ( $value * $values['gst'] ) / 100;
-
-        return $value + $local_gst;
     }
 
 }
